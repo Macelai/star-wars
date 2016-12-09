@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 from pygame.locals import *
 
 pygame.init()
@@ -11,6 +12,8 @@ spaceship_height = 50
 
 shots_x = [999]
 shots_y = [999]
+asteroids_x = [999]
+asteroids_y = [999]
 
 gameDisplay = pygame.display.set_mode((display_widht, display_height))
 pygame.display.set_caption('The battle of death')
@@ -19,8 +22,9 @@ clock = pygame.time.Clock()
 spaceshipImg = pygame.image.load('spaceship.png')
 backgroundImg = pygame.image.load('background.png')
 laserImg = pygame.image.load('laser.png')
+asteroidImg = pygame.image.load('asteroid.png')
 
-def spaceship(x,y):
+def spaceship(x,y): 
     gameDisplay.blit(spaceshipImg, (x,y))
 
 def shot(x,y):
@@ -36,6 +40,30 @@ def move_shoots():
         if shots_x[i] < display_widht:
             gameDisplay.blit(laserImg, (shots_x[i],shots_y[i]))
             gameDisplay.blit(laserImg, (shots_x[i],shots_y[i] + spaceship_height - 7))
+
+def create_asteroid():
+    up_side = randint(0,2)
+    x = randint(1, display_widht)
+    y = randint(1, display_height)
+    if up_side == 0:
+        y = 0
+        asteroids_x.append(x)
+        asteroids_y.append(y)
+    else:
+        x = display_widht - 40
+        asteroids_y.append(y)
+        asteroids_x.append(x)
+
+    gameDisplay.blit(asteroidImg, (x,y))
+
+def move_asteroids():
+    for i in range(len(asteroids_x)):
+         if asteroids_x[i] != 0 and asteroids_x[i] < display_widht and asteroids_x[i] > 0:
+            asteroids_x -= 10
+            gameDisplay.blit(asteroidImg, (asteroids_x[i], asteroids_y[i]))
+         if asteroids_y[i] != 0 and asteroids_y[i] < display_height:
+             asteroids_y += 10
+             gameDisplay.blit(asteroidImg, (asteroids_x[i], asteroids_y[i]))
 
 def game_loop():
     x = 0
@@ -61,6 +89,7 @@ def game_loop():
                     y_change = 4
                 if event.key == pygame.K_SPACE:
                     shot(x,y)
+                    create_asteroid()
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
@@ -81,6 +110,7 @@ def game_loop():
 
         spaceship(x,y)
         move_shoots()
+        move_asteroids()
         pygame.display.update()
         clock.tick(60)
 
