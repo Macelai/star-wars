@@ -57,13 +57,15 @@ def create_asteroid():
     gameDisplay.blit(asteroidImg, (x,y))
 
 def move_asteroids():
+    global asteroids_x
+    global asteroids_y
     for i in range(len(asteroids_x)):
-         if asteroids_x[i] != 0 and asteroids_x[i] < display_widht and asteroids_x[i] > 0:
-            asteroids_x -= 10
+        if asteroids_x[i] < display_widht or asteroids_x[i] > 0 and asteroids_y[i] != 0:
+            asteroids_x[i] -= 7
             gameDisplay.blit(asteroidImg, (asteroids_x[i], asteroids_y[i]))
-         if asteroids_y[i] != 0 and asteroids_y[i] < display_height:
-             asteroids_y += 10
-             gameDisplay.blit(asteroidImg, (asteroids_x[i], asteroids_y[i]))
+        else:
+            asteroids_y[i] += 7
+            gameDisplay.blit(asteroidImg, (asteroids_x[i], asteroids_y[i]))
 
 def game_loop():
     x = 0
