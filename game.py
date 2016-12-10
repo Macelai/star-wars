@@ -10,10 +10,11 @@ display_height = 360
 spaceship_widht = 84
 spaceship_height = 50
 
-shots_x = [999]
-shots_y = [999]
-asteroids_x = [999]
-asteroids_y = [999]
+shots_x = []
+shots_y = []
+asteroids_x = []
+asteroids_y = []
+asteroids_type = []
 
 gameDisplay = pygame.display.set_mode((display_widht, display_height))
 pygame.display.set_caption('The battle of death')
@@ -45,6 +46,7 @@ def create_asteroid():
     up_side = randint(0,2)
     x = randint(1, display_widht)
     y = randint(1, display_height)
+    asteroids_type.append(up_side)
     if up_side == 0:
         y = 0
         asteroids_x.append(x)
@@ -60,7 +62,7 @@ def move_asteroids():
     global asteroids_x
     global asteroids_y
     for i in range(len(asteroids_x)):
-        if asteroids_x[i] < display_widht or asteroids_x[i] > 0 and asteroids_y[i] != 0:
+        if (asteroids_x[i] < display_widht or asteroids_x[i] > 0) and asteroids_type[i] != 0:
             asteroids_x[i] -= 7
             gameDisplay.blit(asteroidImg, (asteroids_x[i], asteroids_y[i]))
         else:
